@@ -1,0 +1,51 @@
+trigger:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  pythonVersion: '3.14'
+  imageRepository: 'yunkaaz/fastapi-ci-cd-lab1'
+  dockerServiceConnection: 'dockerhub-connection'
+
+steps:
+  - checkout: self
+
+  - task: UsePythonVersion@0
+    displayName: 'Choose Python $(pythonVersion)'
+    inputs:
+      versionSpec: '$(pythonVersion)'
+
+  - script: |
+      python -m pip install --upgrade pip
+      python -m pip install -r requirements-dev.txt
+      python -m compileall -q app tests
+    displayName: 'Build and check Python project'
+
+  - script: python -m pytest -q
+    displayName: 'Run unit tests'
+
+  - task: Docker@2
+    displayName: 'Build Docker image and assign tags'
+    inputs:
+      command: 'build'
+      containerRegistry: '$(dockerServiceConnection)'
+      repository: '$(imageRepository)'
+      Dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
+      buildContext: '$(Build.SourcesDirectory)'
+      tags: |
+        latest
+        $(Build.BuildId)
+
+  - task: Docker@2
+    displayName: 'Publish Docker image to Docker Hub'
+    inputs:
+      command: 'push'
+      containerRegistry: '$(dockerServiceConnection)'
+      repository: '$(imageRepository)'
+      tags: |
+        latest
+        $(Build.BuildId)
