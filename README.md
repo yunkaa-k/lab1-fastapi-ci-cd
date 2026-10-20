@@ -98,3 +98,5 @@ Swagger UI in the Docker container: http://localhost:8000/docs
 ## Limitations
 
 Items are stored in memory, so all items are lost whenever the server restarts. This is allowed for Laboratory Work 1.
+
+CI/CD pipeline successfully configured with Azure DevOps.
