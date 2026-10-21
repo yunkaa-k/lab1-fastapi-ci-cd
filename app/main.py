@@ -43,3 +43,5 @@ def update_item(item_id: int, data: ItemInput) -> Item:
 def delete_item(item_id: int) -> None:
     if not repository.delete(item_id):
         raise HTTPException(status_code=404, detail="Item not found")
+
+# Testing GitHub Actions bugfix branch
