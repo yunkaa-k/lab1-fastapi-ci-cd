@@ -1,4 +1,4 @@
-# FastAPI Items API — CI/CD Laboratory Work 1
+# FastAPI Items API — CI/CD Laboratory Work 1.
 
 A simple REST API to manage items. It implements CRUD operations, JSON responses, appropriate HTTP statuses, OpenAPI and Swagger UI. Data is kept in memory (no database is required for Lab 1).
 
